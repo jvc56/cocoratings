@@ -649,6 +649,7 @@ class Tournament:
     """All data for a tournament."""
 
     def __init__(self, ratings_file, result_file, name=None, date=None):
+        print("Tournament constructor: {}, {}, {}, {}".format(ratings_file, result_file, name, date))
         self.player_list = PlayerList(ratings_file)
         self.parse_results_file(result_file, name, date)
 
@@ -847,6 +848,8 @@ class Player:
         try:
             c = 10
             inactive_days = int((tournament_date - self.last_played).days)
+            print("adjusting {}, {}, {}, {}".format(self.name, tournament_date, self.last_played, inactive_days))
+            print("old: {}".format(self.init_rating_deviation))
             self.init_rating_deviation = min(
                 math.sqrt(
                     math.pow(self.init_rating_deviation, 2)
@@ -854,6 +857,7 @@ class Player:
                 ),
                 MAX_DEVIATION,
             )
+            print("new {}".format(self.init_rating_deviation))
         except Exception as ex:
             show_exception(ex)
 

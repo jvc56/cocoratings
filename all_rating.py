@@ -139,11 +139,26 @@ class PlayerDB:
                 p.career_games += dbp.games
                 p.is_unrated = False
 
+    def print_player_ratings(self, tournament, n):
+        print("T{}\n\n".format(n))
+        for s in tournament.sections:
+            for p in s.get_players():
+                if p.name not in self.players:
+                    print("tdev: {} || {} || {}".format(p.name, p.init_rating_deviation, p.new_rating_deviation))
+                else:
+                    dbp = self.players[p.name]
+                    print("pdev: {}|| {} || {} || {}".format(p.name, p.init_rating_deviation, p.new_rating_deviation, dbp.deviation))
+
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
+        print("\n\n\n\n\n\nPROCESSING TOURNAMENT {}, {}\n\n".format(name, date))
+        self.print_player_ratings(t, 1)
         self.adjust_tournament(t)
+        self.print_player_ratings(t, 2)
         t.calc_ratings()
+        self.print_player_ratings(t, 3)
         self.update(t)
+        self.print_player_ratings(t, 4)
         return t
 
 
